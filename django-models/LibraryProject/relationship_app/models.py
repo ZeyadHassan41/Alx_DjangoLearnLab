@@ -1,32 +1,24 @@
-from .models import Library
-from .models import Book
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test, login_required
+from .models import UserProfile
 
-class Author(models.Model):
-    name = models.CharField(max_length=200)
+def is_admin(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
-    def __str__(self):
-        return self.name
+def is_librarian(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
 
+def is_member(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
 
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
-    
-    def __str__(self):
-        return self.name
-    
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
 
-class Library(models.Model):
-    name = models.CharField(max_length=200)
-    book = models.ManyToManyField(Book, related_name='libraries')
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
 
-    def __str__(self):
-        return self.name
-
-class Librarian(models.Model):
-    name = models.CharField(max_length=200)
-    library = models.OneToOneField(Book, on_delete=models.CASCADE, related_name='librarian')
-
-    def __str__(self):
-        return self.name
-
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
