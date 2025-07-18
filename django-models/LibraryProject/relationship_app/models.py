@@ -1,4 +1,5 @@
-from django.db import models
+from .models import Library
+from .models import Book
 
 class Author(models.Model):
     name = models.CharField(max_length=200)
