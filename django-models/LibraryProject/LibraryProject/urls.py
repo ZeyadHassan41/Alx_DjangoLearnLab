@@ -17,10 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from django.contrib import admin
-from django.urls import path, include
-
 urlpatterns = [
-    path('', include('relationship_app.urls')),  # ✅ Makes URLs reachable
     path('admin/', admin.site.urls),
+    path('', include('relationship_app.urls')),
 ]
