@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .models import Library
 from .models import Book
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 
 def list_books(request):
     books = Book.objects.all()
