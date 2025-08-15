@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Books</title>
+  <!-- Django auto-escapes variables in templates by default (helps prevent XSS). -->
+</head>
+<body>
+  <h1>Books</h1>
+
+  <form method="get" action="">
+    <!-- GET form does not need CSRF, but using forms.Form for validation prevents injection -->
+    {{ form.q.label_tag }} {{ form.q }}
+    <button type="submit">Search</button>
+  </form>
+
+  <ul>
+    {% for book in books %}
+      <li>{{ book.title }} by {{ book.author }} ({{ book.publication_year }})</li>
+    {% empty %}
+      <li>No books found.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Example links to forms that DO require CSRF on POST -->
+  <p>
+    <a href="{% url 'book_create' %}">Create new book</a>
+  </p>
+</body>
+</html>
