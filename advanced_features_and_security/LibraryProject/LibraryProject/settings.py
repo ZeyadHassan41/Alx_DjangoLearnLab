@@ -132,6 +132,15 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
+# Enforce HTTPS redirect
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+# Instructs browsers to only use HTTPS for this site and subdomains
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 # Content Security Policy (CSP) example
 # If you add django-csp, you can manage CSP via settings instead of middleware
 # CSP_DEFAULT_SRC = ("'self'",)
