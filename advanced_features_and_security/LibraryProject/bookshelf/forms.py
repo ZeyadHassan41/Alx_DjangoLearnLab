@@ -21,3 +21,22 @@ class BookSearchForm(forms.Form):
         required=False,
         help_text="Search by title or author."
     )
+
+
+class ExampleForm(forms.Form):
+    """
+    A simple example form to demonstrate CSRF token inclusion
+    and safe handling of user input.
+    """
+    name = forms.CharField(max_length=100, label="Your Name")
+    email = forms.EmailField(label="Email Address")
+    message = forms.CharField(
+        widget=forms.Textarea,
+        label="Message",
+        help_text="Enter your message here."
+    )
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        # Example of input sanitization — stripping unwanted spaces
+        return name.strip()
