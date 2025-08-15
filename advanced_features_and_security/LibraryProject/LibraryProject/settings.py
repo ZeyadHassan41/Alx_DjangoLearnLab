@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'relationship_app.apps.RelationshipAppConfig',
 ]
 
+# Custom user model
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -124,5 +128,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom user model
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
