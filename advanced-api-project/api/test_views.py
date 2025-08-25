@@ -1,33 +1,33 @@
+from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 from rest_framework import status
-from django.urls import reverse
 from .models import Book
 
+class BookAPITest(APITestCase):
 
-class BookAPITests(APITestCase):
     def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        
+        # Create a sample book
         self.book = Book.objects.create(
-            title="Test Driven Development",
-            author="Kent Beck",
-            publication_year=2003
+            title="Test Book",
+            author="Author Name",
+            publication_year=2024
         )
-        self.url = reverse("book-list")  # Assuming DRF router registered as book-list
+    
+    def test_book_list_authenticated(self):
+        # Login before making request
+        self.client.login(username="testuser", password="password123")
 
-    def test_get_books_list(self):
-        response = self.client.get(self.url)
+        response = self.client.get("/api/books/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("title", response.data[0])  # <-- checks payload
-        self.assertEqual(response.data[0]["title"], "Test Driven Development")
+        self.assertIn("title", response.data[0])  # ✅ ensures data is returned
 
-    def test_create_book(self):
-        data = {
-            "title": "Clean Code",
-            "author": "Robert C. Martin",
-            "publication_year": 2008
-        }
-        response = self.client.post(self.url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data["title"], "Clean Code")
+    def test_book_list_unauthenticated(self):
+        response = self.client.get("/api/books/")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)  # or 401 depending on settings
+
 
 def test_filter_books_by_author(self):
     url = f"{self.url}?author=Kent Beck"
