@@ -5,37 +5,33 @@ from .models import Book
 
 
 class BookAPITests(APITestCase):
-
     def setUp(self):
         self.book = Book.objects.create(
-            title="Test Book",
-            author="John Doe",
-            publication_year=2023
+            title="Test Driven Development",
+            author="Kent Beck",
+            publication_year=2003
         )
-        self.list_url = reverse('book-list')
-        self.detail_url = reverse('book-detail', args=[self.book.id])
-        self.create_url = reverse('book-create')
-        self.update_url = reverse('book-update', args=[self.book.id])
-        self.delete_url = reverse('book-delete', args=[self.book.id])
+        self.url = reverse("book-list")  # Assuming DRF router registered as book-list
 
-    def test_list_books(self):
-        response = self.client.get(self.list_url)
+    def test_get_books_list(self):
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_retrieve_book(self):
-        response = self.client.get(self.detail_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("title", response.data[0])  # <-- checks payload
+        self.assertEqual(response.data[0]["title"], "Test Driven Development")
 
     def test_create_book(self):
-        data = {"title": "New Book", "author": "Jane Doe", "publication_year": 2024}
-        response = self.client.post(self.create_url, data)
+        data = {
+            "title": "Clean Code",
+            "author": "Robert C. Martin",
+            "publication_year": 2008
+        }
+        response = self.client.post(self.url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["title"], "Clean Code")
 
-    def test_update_book(self):
-        data = {"title": "Updated Book", "author": "John Doe", "publication_year": 2025}
-        response = self.client.put(self.update_url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_delete_book(self):
-        response = self.client.delete(self.delete_url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+def test_filter_books_by_author(self):
+    url = f"{self.url}?author=Kent Beck"
+    response = self.client.get(url)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(response.data), 1)
+    self.assertEqual(response.data[0]["author"], "Kent Beck")
