@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from taggit.forms import TagWidget  
 from .models import Post, Comment
-from taggit.forms import TagWidget   # ✅ Import TagWidget
 
 
 class CommentForm(forms.ModelForm):
@@ -10,7 +10,7 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ["content"]
         widgets = {
-            "content": forms.Textarea(attrs={"rows": 3, "placeholder": "Write a comment..."}),
+            "content": forms.Textarea(attrs={"rows": 3, "placeholder": "Write a comment..."})
         }
 
 
@@ -21,7 +21,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "Post title"}),
             "content": forms.Textarea(attrs={"rows": 8, "placeholder": "Write your post..."}),
-            "tags": TagWidget(attrs={"placeholder": "Add tags separated by commas"}),  # ✅ Added TagWidget
+            "tags": TagWidget(),   # ✅ Use TagWidget for tags
         }
 
 
