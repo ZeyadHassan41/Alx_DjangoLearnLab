@@ -8,6 +8,18 @@ from django.views.generic import (
     DeleteView,
 )
 from .models import Post
+from .models import Book
+
+class BookUpdateView(UserPassesTestMixin, UpdateView):
+    model = Book
+    fields = ['title', 'author', 'price', 'stock', 'category', 'description']
+    template_name = 'books/book_form.html'
+    success_url = '/books/'
+
+    # This function decides who can access
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
 
 # Home View
 def home(request):
