@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Blog Posts</h2>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <strong>{{ post.title }}</strong> by {{ post.author.username }}  
+                <p>{{ post.content|truncatechars:100 }}</p>
+            </li>
+        {% empty %}
+            <li>No posts yet.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
