@@ -1,25 +1,14 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
-from .views import (
-    PostListView, PostDetailView, PostCreateView,
-    PostUpdateView, PostDeleteView, HomeRedirectView
-)
 
 urlpatterns = [
-    # Home
-    path("", HomeRedirectView.as_view(), name="home"),
+    path("", views.index, name="index"),
 
-    # Posts
-    path("posts/", PostListView.as_view(), name="post-list"),
-    path("posts/new/", PostCreateView.as_view(), name="post-create"),
-    path("posts/<int:pk>/", PostDetailView.as_view(), name="post-detail"),
-    path("posts/<int:pk>/edit/", PostUpdateView.as_view(), name="post-edit"),
-    path("posts/<int:pk>/delete/", PostDeleteView.as_view(), name="post-delete"),
-
-    # Auth
-    path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(template_name="registration/logged_out.html"), name="logout"),
     path("register/", views.register, name="register"),
     path("profile/", views.profile, name="profile"),
+
+    path("post/new/", views.PostCreateView.as_view(), name="post_create"),
+    path("post/<int:pk>/", views.PostDetailView.as_view(), name="post_detail"),
+    path("post/<int:pk>/update/", views.PostUpdateView.as_view(), name="post_update"),
+    path("post/<int:pk>/delete/", views.PostDeleteView.as_view(), name="post_delete"),
 ]
